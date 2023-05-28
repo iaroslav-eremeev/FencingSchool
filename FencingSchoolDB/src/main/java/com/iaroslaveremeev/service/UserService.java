@@ -7,6 +7,6 @@ import java.util.Optional;
 public interface UserService {
     boolean authenticateUser(String login, char[] password);
     void registerUser(User user);
-    Optional<User> get(long id);
+    User get(long id);
     void delete(long id);
 }

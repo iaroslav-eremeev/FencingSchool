@@ -41,12 +41,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> get(long id) {
-        try {
-            return this.userRepository.findById(id);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("User with this id does not exist");
-        }
+    public User get(long id) {
+        return this.userRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("User with such id does not exist!"));
     }
 
     @Override

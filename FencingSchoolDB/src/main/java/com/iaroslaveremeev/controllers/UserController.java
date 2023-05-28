@@ -1,14 +1,12 @@
 package com.iaroslaveremeev.controllers;
 
+import com.iaroslaveremeev.dto.ResponseResult;
 import com.iaroslaveremeev.model.User;
 import com.iaroslaveremeev.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -41,6 +39,28 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Failed to register user");
+        }
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<ResponseResult<User>> get(@PathVariable long id) {
+        try {
+            User user = this.userService.get(id);
+            return new ResponseEntity<>(new ResponseResult<>(user), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(new ResponseResult<>(e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<String> delete(@PathVariable long id) {
+        try {
+            this.userService.delete(id);
+            return ResponseEntity.ok("User deleted successfully!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Failed to delete user");
         }
     }
 }
