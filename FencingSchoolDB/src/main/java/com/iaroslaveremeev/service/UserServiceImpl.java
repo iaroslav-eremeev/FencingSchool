@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,17 +16,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean authenticateUser(String login, char[] password) {
+    public User get(String login, char[] password) {
         User user = userRepository.getUserByLogin(login);
         if (user != null && Arrays.equals(user.getPassword(), password)) {
             // Clear the password array to remove sensitive information
             Arrays.fill(password, ' ');
-            return true;
+            return user;
         }
         else {
             // Clear the password array even if the login is invalid
             Arrays.fill(password, ' ');
-            return false; // Login is invalid
+            return null; // Login is invalid
         }
     }
 
@@ -36,14 +35,14 @@ public class UserServiceImpl implements UserService {
         try {
             this.userRepository.save(user);
         } catch (Exception e) {
-            throw new IllegalArgumentException("User is already added!");
+            throw new IllegalArgumentException("User registration failed!");
         }
     }
 
     @Override
     public User get(long id) {
         return this.userRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("User with such id does not exist!"));
+                () -> new IllegalArgumentException("User with such ID does not exist!"));
     }
 
     @Override

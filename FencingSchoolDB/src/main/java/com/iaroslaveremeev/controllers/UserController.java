@@ -17,28 +17,26 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> checkLogin(@RequestParam("login") String login,
+    @GetMapping("/login")
+    public ResponseEntity<ResponseResult<User>> checkLogin(@RequestParam("login") String login,
                                              @RequestParam("password") String password) {
-        if (this.userService.authenticateUser(login, password.toCharArray())){
-            return ResponseEntity.ok("Login successful!");
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login credentials");
+        try {
+            User user = this.userService.get(login, password.toCharArray());
+            return new ResponseEntity<>(new ResponseResult<>(user), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(new ResponseResult<>(e.getMessage()),
+                    HttpStatus.UNAUTHORIZED);
         }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestParam("login") String login,
-                                          @RequestParam("password") String password,
-                                          @RequestParam("name") String name) {
+    public ResponseEntity<ResponseResult<User>> registerUser(@RequestBody User user) {
         try {
-            User user = new User(login, password.toCharArray(), name);
             this.userService.registerUser(user);
-            return ResponseEntity.ok("User registered successfully!");
+            return new ResponseEntity<>(new ResponseResult<>(user), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Failed to register user");
+            return new ResponseEntity<>(new ResponseResult<>(e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -54,13 +52,14 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> delete(@PathVariable long id) {
+    public ResponseEntity<ResponseResult<User>> delete(@PathVariable long id) {
         try {
+            User deletedUser = this.userService.get(id);
             this.userService.delete(id);
-            return ResponseEntity.ok("User deleted successfully!");
+            return new ResponseEntity<>(new ResponseResult<>(deletedUser), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Failed to delete user");
+            return new ResponseEntity<>(new ResponseResult<>(e.getMessage()),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 }
