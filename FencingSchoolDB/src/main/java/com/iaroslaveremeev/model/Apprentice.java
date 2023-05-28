@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 /**
  * Fencing school student who attends training sessions with different coaches
@@ -34,4 +35,7 @@ public class Apprentice {
     @Column(name = "phone_number", nullable = false)
     @NonNull
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "apprentice")
+    private List<Training> trainings;
 }

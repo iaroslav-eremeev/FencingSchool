@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/FencingSchool.iml" filepath="$PROJECT_DIR$/.idea/FencingSchool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FencingSchoolDB/FencingSchoolDB.iml" filepath="$PROJECT_DIR$/FencingSchoolDB/FencingSchoolDB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FencingSchoolFX/FencingSchoolFX.iml" filepath="$PROJECT_DIR$/FencingSchoolFX/FencingSchoolFX.iml" />
     </modules>
   </component>
 </project>

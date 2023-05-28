@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-
+import java.util.List;
 /**
  * A fencing school trainer (coach) who conducts training for students.
  * Each trainer has an experience measured in the number of years worked in this field.
@@ -35,5 +35,12 @@ public class Trainer {
     @Column(name = "experience", nullable = false)
     @NonNull
     private int experience;
+
+    @OneToOne(mappedBy = "trainer")
+    private TrainerSchedule trainerSchedule;
+
+    @OneToMany(mappedBy = "trainer")
+    private List<Training> trainings;
+
 }
 

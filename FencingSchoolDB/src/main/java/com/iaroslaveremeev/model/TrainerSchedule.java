@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class TrainerSchedule {
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_trainer", referencedColumnName = "id")
     @Id
     private Trainer trainer;
