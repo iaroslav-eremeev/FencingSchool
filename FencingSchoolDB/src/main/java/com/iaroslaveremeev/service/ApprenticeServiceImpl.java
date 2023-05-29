@@ -44,9 +44,9 @@ public class ApprenticeServiceImpl implements ApprenticeService {
     }
 
     @Override
-    public Apprentice update(Apprentice apprentice) {
+    public Apprentice update(long id, Apprentice apprentice) {
         try {
-            Apprentice apprenticeToUpdate = this.apprenticeRepository.getById(apprentice.getId());
+            Apprentice apprenticeToUpdate = this.apprenticeRepository.getById(id);
             apprenticeToUpdate.setName(apprentice.getName());
             apprenticeToUpdate.setSurname(apprentice.getSurname());
             apprenticeToUpdate.setPatronymic(apprentice.getPatronymic());
