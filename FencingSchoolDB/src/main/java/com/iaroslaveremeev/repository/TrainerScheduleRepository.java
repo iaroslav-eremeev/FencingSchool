@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TrainerScheduleRepository extends JpaRepository<TrainerSchedule, Long> {
+    TrainerSchedule getTrainerScheduleByTrainerId(long idTrainer);
 }
