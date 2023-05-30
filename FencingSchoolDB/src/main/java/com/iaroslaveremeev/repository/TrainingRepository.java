@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface TrainingRepository extends JpaRepository<Training, Long> {
-    Training getTrainingByApprenticeId(long apprenticeId);
-    Training getTrainingByTrainerId(long trainerId);
+    List<Training> findAllByApprenticeId(long apprenticeId);
+    List<Training> findAllByTrainerId(long trainerId);
     boolean existsByApprenticeAndDateAndTimeStart(Apprentice apprentice, LocalDate date, LocalTime timeStart);
     int countByTrainerAndDateAndTimeStart(Trainer trainer, LocalDate date, LocalTime timeStart);
 }

@@ -59,27 +59,35 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public void addByTrainerId(long trainerId) {
-
-    }
-
-    @Override
     public Training get(long id) {
-        return null;
+        return this.trainingRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Training with such ID does not exist!"));
     }
 
     @Override
     public List<Training> getByApprenticeId(long apprenticeId) {
-        return null;
+        try {
+            return this.trainingRepository.findAllByApprenticeId(apprenticeId);
+        } catch (Exception e){
+            throw new RuntimeException("There is no apprentice with such ID!");
+        }
     }
 
     @Override
     public List<Training> getByTrainerId(long trainerId) {
-        return null;
+        try {
+            return this.trainingRepository.findAllByTrainerId(trainerId);
+        } catch (Exception e){
+            throw new RuntimeException("There is no trainer with such ID!");
+        }
     }
 
     @Override
     public void delete(long id) {
-
+        try {
+            this.trainingRepository.deleteById(id);
+        } catch (Exception e){
+            throw new IllegalArgumentException("No training with such ID found!");
+        }
     }
 }
