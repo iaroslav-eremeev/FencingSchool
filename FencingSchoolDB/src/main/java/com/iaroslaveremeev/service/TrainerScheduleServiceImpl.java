@@ -2,7 +2,6 @@ package com.iaroslaveremeev.service;
 
 import com.iaroslaveremeev.model.Trainer;
 import com.iaroslaveremeev.model.TrainerSchedule;
-import com.iaroslaveremeev.repository.TrainerRepository;
 import com.iaroslaveremeev.repository.TrainerScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +70,10 @@ public class TrainerScheduleServiceImpl implements TrainerScheduleService {
 
     @Override
     public void delete(long idTrainer) {
-
+        try {
+            this.trainerScheduleRepository.deleteById(idTrainer);
+        } catch (Exception e){
+            throw new IllegalArgumentException("No trainer with such ID found!");
+        }
     }
 }

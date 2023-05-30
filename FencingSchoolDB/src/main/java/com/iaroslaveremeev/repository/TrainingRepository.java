@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TrainingRepository extends JpaRepository<Training, Long> {
+    Training getTrainingByApprenticeId(long apprenticeId);
+    Training getTrainingByTrainerId(long trainerId);
 }
