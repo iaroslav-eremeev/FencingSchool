@@ -17,6 +17,9 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Returns the user if login is successful
+     */
     @GetMapping("/login")
     public ResponseEntity<ResponseResult<User>> checkLogin(@RequestParam("login") String login,
                                              @RequestParam("password") String password) {
@@ -29,6 +32,9 @@ public class UserController {
         }
     }
 
+    /**
+     * Registers a new user and returns the registered user if successful
+     */
     @PostMapping("/register")
     public ResponseEntity<ResponseResult<User>> registerUser(@RequestBody User user) {
         try {
@@ -40,6 +46,9 @@ public class UserController {
         }
     }
 
+    /**
+     * Returns the user if found
+     */
     @GetMapping(path = "/{id}")
     public ResponseEntity<ResponseResult<User>> get(@PathVariable long id) {
         try {
@@ -51,6 +60,9 @@ public class UserController {
         }
     }
 
+    /**
+     * Deletes the user if found and returns the deleted user
+     */
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<ResponseResult<User>> delete(@PathVariable long id) {
         try {
