@@ -37,12 +37,10 @@ public class Training {
 
     @ManyToOne
     @JoinColumn(name = "trainer_id", nullable = false)
-    @NonNull
     private Trainer trainer;
 
     @ManyToOne
     @JoinColumn(name = "apprentice_id", nullable = false)
-    @NonNull
     private Apprentice apprentice;
 
     @Column(name = "training_date", nullable = false)

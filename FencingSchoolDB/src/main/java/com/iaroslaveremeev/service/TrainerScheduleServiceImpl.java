@@ -18,7 +18,8 @@ public class TrainerScheduleServiceImpl implements TrainerScheduleService {
     @Override
     public TrainerSchedule addSchedule(long idTrainer, String dayOfWeek, LocalTime start, LocalTime end) {
         try {
-            Trainer trainer = this.trainerScheduleRepository.getTrainerScheduleByTrainerId(idTrainer).getTrainer();
+            Trainer trainer = this.trainerScheduleRepository
+                    .getTrainerScheduleByTrainerId(idTrainer).getTrainer();
             TrainerSchedule trainerSchedule = trainer.getTrainerSchedule();
             if(trainerSchedule == null){
                 trainerSchedule = new TrainerSchedule();
