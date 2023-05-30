@@ -34,10 +34,9 @@ public class Trainer {
     private String patronymic;
 
     @Column(name = "experience", nullable = false)
-    @NonNull
     private int experience;
 
-    @OneToOne(mappedBy = "trainer")
+    @OneToOne(mappedBy = "trainer", cascade = CascadeType.ALL)
     private TrainerSchedule trainerSchedule;
 
     @OneToMany(mappedBy = "trainer")

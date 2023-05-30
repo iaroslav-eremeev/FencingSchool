@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalTime;
 
 /**
@@ -16,11 +17,12 @@ import java.time.LocalTime;
 @Table(name = "trainer_schedules")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class TrainerSchedule {
-    @OneToOne
-    @JoinColumn(name = "id_trainer", referencedColumnName = "id")
     @Id
+    private Long id;
+    @OneToOne
+    @JoinColumn(name = "trainer_id")
+    @MapsId
     private Trainer trainer;
     @JsonFormat(pattern="HH:mm")
     @Column(name = "monday_start")

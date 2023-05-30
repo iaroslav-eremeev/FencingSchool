@@ -32,7 +32,6 @@ public class Training {
     private long id;
 
     @Column(name = "number_gym", nullable = false)
-    @NonNull
     private int numberGym;
 
     @ManyToOne

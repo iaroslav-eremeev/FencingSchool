@@ -17,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 @RestController
 @RequestMapping("/schedule")
 public class TrainerScheduleController {
-
     private TrainerScheduleService trainerScheduleService;
 
     @Autowired
