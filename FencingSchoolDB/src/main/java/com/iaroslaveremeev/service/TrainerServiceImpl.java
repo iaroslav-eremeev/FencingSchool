@@ -4,6 +4,7 @@ import com.iaroslaveremeev.model.Trainer;
 import com.iaroslaveremeev.repository.TrainerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,9 +44,11 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    @Transactional
     public Trainer update(long id, Trainer trainer) {
         try {
-            Trainer trainerToUpdate = this.trainerRepository.getById(id);
+            // findById does the call 'eagerly' instead of 'lazy loading' getById
+            Trainer trainerToUpdate = this.trainerRepository.findById(id).get();
             trainerToUpdate.setName(trainer.getName());
             trainerToUpdate.setSurname(trainer.getSurname());
             trainerToUpdate.setPatronymic(trainer.getPatronymic());
@@ -58,6 +61,7 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    @Transactional
     public void delete(long id) {
         try {
             this.trainerRepository.deleteById(id);
