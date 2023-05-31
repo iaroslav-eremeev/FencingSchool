@@ -35,6 +35,8 @@ public class Trainer {
     private int experience;
 
     @OneToOne(mappedBy = "trainer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ToString.Exclude
     private TrainerSchedule trainerSchedule;
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)

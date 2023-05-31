@@ -2,6 +2,7 @@ package com.iaroslaveremeev.service;
 
 import com.iaroslaveremeev.model.Trainer;
 import com.iaroslaveremeev.model.TrainerSchedule;
+import com.iaroslaveremeev.repository.TrainerRepository;
 import com.iaroslaveremeev.repository.TrainerScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,24 +12,38 @@ import java.time.LocalTime;
 @Service
 public class TrainerScheduleServiceImpl implements TrainerScheduleService {
     private TrainerScheduleRepository trainerScheduleRepository;
+    private TrainerRepository trainerRepository;
     @Autowired
     public void setTrainerScheduleRepository(TrainerScheduleRepository trainerScheduleRepository) {
         this.trainerScheduleRepository = trainerScheduleRepository;
     }
+    @Autowired
+    public void setTrainerRepository(TrainerRepository trainerRepository) {
+        this.trainerRepository = trainerRepository;
+    }
     @Override
     public TrainerSchedule addSchedule(long idTrainer, String dayOfWeek, LocalTime start, LocalTime end) {
         try {
-            Trainer trainer = this.trainerScheduleRepository
-                    .getTrainerScheduleByTrainerId(idTrainer).getTrainer();
+            Trainer trainer = this.trainerRepository.findById(idTrainer).get();
             TrainerSchedule trainerSchedule = trainer.getTrainerSchedule();
             if(trainerSchedule == null){
                 trainerSchedule = new TrainerSchedule();
+                if (start.isBefore(end)){
+                    trainerSchedule.setId(idTrainer);
+                    trainerSchedule.setTrainer(trainer);
+                    trainerSchedule.add(dayOfWeek, start, end);
+                    trainer.setTrainerSchedule(trainerSchedule);
+                    return trainerSchedule;
+                }
+                else throw new IllegalArgumentException("Time start should come before end!");
             }
-            if (start.isBefore(end)){
-                trainerSchedule.add(dayOfWeek, start, end);
-                return trainerSchedule;
+            else {
+                if (start.isBefore(end)){
+                    trainerSchedule.add(dayOfWeek, start, end);
+                    return trainerSchedule;
+                }
+                else throw new IllegalArgumentException("Time start should come before end!");
             }
-            else return null;
         } catch (Exception e) {
             throw new RuntimeException("Trainer schedule not added!");
         }
@@ -37,7 +52,8 @@ public class TrainerScheduleServiceImpl implements TrainerScheduleService {
     @Override
     public TrainerSchedule getByTrainerId(long idTrainer) {
         try {
-            return this.trainerScheduleRepository.getTrainerScheduleByTrainerId(idTrainer);
+            Trainer trainer = this.trainerRepository.getById(idTrainer);
+            return this.trainerScheduleRepository.getTrainerScheduleByTrainer(trainer);
         } catch (Exception e){
             throw new IllegalArgumentException("There is no schedule for such trainer ID!");
         }
@@ -46,8 +62,9 @@ public class TrainerScheduleServiceImpl implements TrainerScheduleService {
     @Override
     public TrainerSchedule update(long idTrainer, TrainerSchedule trainerSchedule) {
         try {
-            TrainerSchedule trainerScheduleToUpdate = this.trainerScheduleRepository
-                    .getTrainerScheduleByTrainerId(idTrainer);
+            Trainer trainer = this.trainerRepository.findById(idTrainer).get();
+            TrainerSchedule trainerScheduleToUpdate =
+                    this.trainerScheduleRepository.getTrainerScheduleByTrainer(trainer);
             trainerScheduleToUpdate.setMondayStart(trainerSchedule.getMondayStart());
             trainerScheduleToUpdate.setMondayEnd(trainerSchedule.getMondayEnd());
             trainerScheduleToUpdate.setTuesdayStart(trainerSchedule.getTuesdayStart());

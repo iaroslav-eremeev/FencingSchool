@@ -1,9 +1,11 @@
 package com.iaroslaveremeev.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,6 +26,7 @@ public class TrainerSchedule {
     @JoinColumn(name = "trainer_id")
     @MapsId
     private Trainer trainer;
+
     @JsonFormat(pattern="HH:mm")
     @Column(name = "monday_start")
     private LocalTime mondayStart;
@@ -83,10 +86,13 @@ public class TrainerSchedule {
 
     public void add(String dayOfWeek, LocalTime start, LocalTime end) {
         try {
-            this.getClass().getDeclaredField(dayOfWeek.toLowerCase() + "_start")
+            this.getClass().getDeclaredField(dayOfWeek.toLowerCase() + "Start")
                     .set(this, start);
-            this.getClass().getDeclaredField(dayOfWeek.toLowerCase() + "_end")
+            this.getClass().getDeclaredField(dayOfWeek.toLowerCase() + "End")
                     .set(this, end);
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
