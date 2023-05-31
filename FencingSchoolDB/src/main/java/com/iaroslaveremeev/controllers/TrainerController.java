@@ -81,8 +81,8 @@ public class TrainerController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<ResponseResult<Trainer>> delete(@PathVariable long id){
         try {
-            this.trainerService.delete(id);
             Trainer deletedTrainer = this.trainerService.get(id);
+            this.trainerService.delete(id);
             return new ResponseEntity<>(new ResponseResult<>(deletedTrainer), HttpStatus.OK);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(new ResponseResult<>(e.getMessage()), HttpStatus.BAD_REQUEST);
