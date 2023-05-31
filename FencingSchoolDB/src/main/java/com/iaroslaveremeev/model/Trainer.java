@@ -39,7 +39,7 @@ public class Trainer {
     @OneToOne(mappedBy = "trainer", cascade = CascadeType.ALL)
     private TrainerSchedule trainerSchedule;
 
-    @OneToMany(mappedBy = "trainer")
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
     private List<Training> trainings;
 
 }

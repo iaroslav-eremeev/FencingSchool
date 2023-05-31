@@ -37,6 +37,6 @@ public class Apprentice {
     @NonNull
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "apprentice")
+    @OneToMany(mappedBy = "apprentice", cascade = CascadeType.ALL)
     private List<Training> trainings;
 }
