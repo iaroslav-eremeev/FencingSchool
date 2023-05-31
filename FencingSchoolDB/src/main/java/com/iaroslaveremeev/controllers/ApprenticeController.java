@@ -40,7 +40,8 @@ public class ApprenticeController {
     @GetMapping
     public ResponseEntity<ResponseResult<List<Apprentice>>> get(){
         try {
-            return new ResponseEntity<>(new ResponseResult<>(this.apprenticeService.get()),
+            List<Apprentice> apprentices = this.apprenticeService.get();
+            return new ResponseEntity<>(new ResponseResult<>(apprentices),
                     HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(new ResponseResult<>(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -53,7 +54,8 @@ public class ApprenticeController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<ResponseResult<Apprentice>> get(@PathVariable long id){
         try {
-            return new ResponseEntity<>(new ResponseResult<>(this.apprenticeService.get(id)),
+            Apprentice apprentice = this.apprenticeService.get(id);
+            return new ResponseEntity<>(new ResponseResult<>(apprentice),
                     HttpStatus.OK);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(new ResponseResult<>(e.getMessage()), HttpStatus.BAD_REQUEST);
@@ -67,8 +69,9 @@ public class ApprenticeController {
     public ResponseEntity<ResponseResult<Apprentice>> update(@PathVariable long id,
                                                              @RequestBody Apprentice apprentice){
         try {
-            Apprentice apprenticeToUpdate = this.apprenticeService.update(id, apprentice);
-            return new ResponseEntity<>(new ResponseResult<>(apprenticeToUpdate),
+            this.apprenticeService.update(id, apprentice);
+            Apprentice updatedApprentice = this.apprenticeService.get(id);
+            return new ResponseEntity<>(new ResponseResult<>(updatedApprentice),
                     HttpStatus.OK);
         } catch (IllegalArgumentException e){
             return new ResponseEntity<>(new ResponseResult<>(e.getMessage()), HttpStatus.BAD_REQUEST);

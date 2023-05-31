@@ -4,6 +4,7 @@ import com.iaroslaveremeev.model.Apprentice;
 import com.iaroslaveremeev.repository.ApprenticeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -44,9 +45,11 @@ public class ApprenticeServiceImpl implements ApprenticeService {
     }
 
     @Override
+    @Transactional
     public Apprentice update(long id, Apprentice apprentice) {
         try {
-            Apprentice apprenticeToUpdate = this.apprenticeRepository.getById(id);
+            // findById does the call 'eagerly' instead of 'lazy loading' getById
+            Apprentice apprenticeToUpdate = this.apprenticeRepository.findById(id).get();
             apprenticeToUpdate.setName(apprentice.getName());
             apprenticeToUpdate.setSurname(apprentice.getSurname());
             apprenticeToUpdate.setPatronymic(apprentice.getPatronymic());
@@ -59,6 +62,7 @@ public class ApprenticeServiceImpl implements ApprenticeService {
     }
 
     @Override
+    @Transactional
     public void delete(long id) {
         try {
             this.apprenticeRepository.deleteById(id);
